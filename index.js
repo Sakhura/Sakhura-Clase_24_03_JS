@@ -1,6 +1,6 @@
 // aplicacion principal
 
-const pool = require('./pool');
+const pool = require('./config/db');
 
 // consultas con callback|
 function obtenerUsuariosCallback(){
@@ -25,7 +25,7 @@ async function obtenerUsuarioPorId(id) {
     const query = 'SELECT * FROM usuarios WHERE id = $1';
     const values = [id];
 
-    const cliente = await cliente.connect();
+    const cliente = await pool.connect();
     try{
         const resultado = await cliente.query(query, values);
         
