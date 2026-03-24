@@ -44,4 +44,27 @@ async function obtenerUsuarioPorId(id) {
 
 
 // consultas con async/await
-async function main(){}
+async function main(){
+    try{
+        //verificar conexion
+        await pool.query('SELECT NOW()');
+        console.log('Conexión a la base de datos exitosa');
+
+        //obtener usuarios con callback
+        obtenerUsuariosCallback();
+
+        //promesa
+        await new Promise(resolve => setTimeout(resolve, 500)); //esperar 1 segundo para que se muestre el resultado del callback
+
+        await obtenerUsuarioPorId(1); //reemplaza 1 con el id que quieras consultar
+        await obtenerUsuarioPorId(999); //id que no existe para probar el mensaje de no encontrado
+    } catch (error) {
+        //maneja errores de conexion
+        console.error('Error en la aplicación:', error.message);
+
+    } finally {        //cerrar pool al finalizar
+        await pool.end();
+        console.log('Pool de conexiones cerrado');
+    }
+}
+main();
